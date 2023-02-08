@@ -1,4 +1,7 @@
 ---
+variables:
+  GL_URL: $CI_REPOSITORY_URL
+
 fetch-version:
   stage: pre-release
   image: node:18
