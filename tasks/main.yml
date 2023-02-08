@@ -1,0 +1,17 @@
+---
+# Include variables and define needed variables
+- name: Include OS-specific variables
+  ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
+
+# Include OS specific tasks
+- name: Include OS-specific tasks
+  ansible.builtin.include_tasks: "{{ ansible_os_family }}.yml"
+
+# Include task to setup NFS
+- name: Setup NFS
+  ansible.builtin.include_tasks: setup.yml
+
+- name: Make sure a NFS is running
+  ansible.builtin.systemd:
+    state: started
+    name: "{{ nfs_service_name }}"

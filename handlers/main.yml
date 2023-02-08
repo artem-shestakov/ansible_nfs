@@ -1,0 +1,6 @@
+---
+- name: Restart NFS server
+  ansible.builtin.systemd:
+    state: restarted
+    name: "{{ nfs_service_name }}"
+  listen: restart_nfs

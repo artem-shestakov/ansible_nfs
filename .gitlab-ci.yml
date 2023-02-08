@@ -1,0 +1,18 @@
+---
+image: artemshestakov/ansible:6.7.0
+
+variables:
+  SECRETS: GALAXY_API_KEY=$GALAXY_API_KEY
+
+stages:
+  - test
+  - pre-release
+  - release
+  - migrate
+
+include:
+  - local: .gitlab-ci/test.yml
+  - local: .gitlab-ci/release.yml
+  - project: artem-shestakov/pipeline-template
+    file: github_mirror.yml
+    ref: master
