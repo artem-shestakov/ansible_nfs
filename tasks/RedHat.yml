@@ -1,5 +1,5 @@
 ---
-- name: Install NFS (Red Hat)
+- name: Install NFS server/client (Red Hat)
   ansible.builtin.dnf:
     name: nfs-utils
     state: present

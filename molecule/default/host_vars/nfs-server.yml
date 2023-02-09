@@ -1,3 +1,7 @@
 ---
-nfs_exports:
+nfs_exports_redhat:
+  - "/exports/backups {{ hostvars['nfs-client']['ansible_default_ipv4']['address'] }}(rw,fsid=0,no_subtree_check,sync)"
+nfs_exports_debian:
+  - "/exports {{ hostvars['nfs-client']['ansible_default_ipv4']['address'] }}(rw,fsid=0,no_subtree_check,sync)"
   - "/exports/backups {{ hostvars['nfs-client']['ansible_default_ipv4']['address'] }}(rw,sync,no_root_squash,no_all_squash)"
+nfs_exports: "{{ nfs_exports_debian if ansible_os_family == 'Debian' else nfs_exports_redhat }}"

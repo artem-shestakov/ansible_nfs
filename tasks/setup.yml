@@ -3,7 +3,8 @@
   ansible.builtin.file:
     path: "{{ item | trim | split(' ') | first }}"
     state: directory
-    mode: '0766'
+    owner: nobody
+    mode: '0777'
     recurse: true
   with_items: "{{ nfs_exports }}"
 
