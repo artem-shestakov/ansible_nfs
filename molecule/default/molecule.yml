@@ -22,9 +22,10 @@ provisioner:
   name: ansible
 verifier:
   name: testinfra
-  options:
-    connection: docker
-    v: 2
+  # options:
+  #   connection: docker
+  #   v: 2
+    # s:
 lint: |
   set -e
   yamllint .
