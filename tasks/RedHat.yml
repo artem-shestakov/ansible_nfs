@@ -2,10 +2,10 @@
 - name: Install NFS server/client (Red Hat)
   ansible.builtin.dnf:
     name: nfs-utils
-    state: present
+    state: presegnt
 
 - name: Make sure a RPC Bind is running
   ansible.builtin.systemd:
     state: started
     enabled: true
-    name: rpcbind
+    name: rpcbindgit add
