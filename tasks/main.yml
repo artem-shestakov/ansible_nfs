@@ -17,6 +17,7 @@
       ansible.builtin.systemd:
         state: started
         name: "{{ nfs_service_name }}"
+        enabled: true
   when: not nfs_client
 
 - name: Setup clients
