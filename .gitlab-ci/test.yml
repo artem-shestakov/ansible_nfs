@@ -2,7 +2,8 @@
 test:ansible-lint:
   stage: test
   before_script:
-    - pip install ansible==$ANSIBLE_VERSION ansible-lint yamllint
+    - ansible-galaxy collection install community.general:6.3.0
+    - ansible-galaxy collection install ansible.posix:1.5.1
   script:
     - ansible-lint -v
   rules:
@@ -17,7 +18,8 @@ test:ansible-lint:
 test:yamllint:
   stage: test
   before_script:
-    - pip install ansible==$ANSIBLE_VERSION ansible-lint yamllint
+    - ansible-galaxy collection install community.general:6.3.0
+    - ansible-galaxy collection install ansible.posix:1.5.1
   script:
     - yamllint .
   rules:
@@ -33,6 +35,9 @@ test:molecule:
   stage: test
   variables:
     PY_COLORS: 1
+  before_script:
+    - ansible-galaxy collection install community.general:6.3.0
+    - ansible-galaxy collection install ansible.posix:1.5.1
   script:
     - molecule test
   parallel:
