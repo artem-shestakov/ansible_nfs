@@ -24,6 +24,4 @@ galaxy_info:
     - storage
     - linux
 
-dependencies:
-  - src: community.general
-  - src: ansible.posix
+dependencies: []
