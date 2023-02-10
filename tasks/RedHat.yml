@@ -7,4 +7,5 @@
 - name: Make sure a RPC Bind is running
   ansible.builtin.systemd:
     state: started
+    enabled: true
     name: rpcbind
