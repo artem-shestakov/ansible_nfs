@@ -1,6 +1,6 @@
 galaxy_info:
-  role_name: ansible_nfs
-  namespace: arem_shestakov
+  role_name: nfs
+  namespace: artem_shestakov
   author: Artem Shestakov
   description: your role description
 
