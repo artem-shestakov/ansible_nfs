@@ -1,0 +1,20 @@
+---
+- name: Check a mount point
+  ansible.builtin.stat:
+    path: "{{ item | trim | split(' ') | last }}"
+  register: mount_point
+
+- name: Create a mount point
+  ansible.builtin.file:
+    path: "{{ item | trim | split(' ') | last }}"
+    state: directory
+    mode: '0644'
+    recurse: true
+  when: not mount_point.stat.exists
+
+- name: Mount the NFS share
+  ansible.posix.mount:
+    path: "{{ item | trim | split(' ') | last }}"
+    src: "{{ item | trim | split(' ') | first }}"
+    fstype: nfs
+    state: mounted

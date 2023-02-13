@@ -1,2 +1,7 @@
 ---
-nfs_exports: []
+nfs_client: true
+nfs_mount_points_debian:
+  - "{{ hostvars['nfs-server']['ansible_default_ipv4']['address'] }}:/backups /mnt/exports/backups"
+nfs_mount_points_redhat:
+  - "{{ hostvars['nfs-server']['ansible_default_ipv4']['address'] }}:/exports/backups /mnt/exports/backups"
+nfs_mount_points: "{{ nfs_mount_points_debian if ansible_os_family == 'Debian' else nfs_mount_points_redhat }}"
