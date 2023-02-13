@@ -1,0 +1,5 @@
+{
+    "yaml.schemas": {
+        "https://json.schemastore.org/github-workflow.json": "file:///Volumes/Data/IaC/ansible_nfs/.github/workflows/galaxy.yml"
+    }
+}
