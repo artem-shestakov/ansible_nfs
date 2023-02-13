@@ -1,3 +1,4 @@
 ---
 nfs_client: false
 nfs_exports: []
+nfs_mount_points: []

@@ -28,4 +28,3 @@ release:
     - npx semantic-release
   tags:
     - docker.sock
-

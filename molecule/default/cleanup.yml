@@ -1,0 +1,30 @@
+---
+- name: Cleanup
+  hosts: all
+  tasks:
+    - name: Unmount the NFS share
+      ansible.posix.mount:
+        path: "{{ item | trim | split(' ') | last }}"
+        src: "{{ item | trim | split(' ') | first }}"
+        fstype: nfs
+        state: unmounted
+      with_items: "{{ nfs_mount_points }}"
+      when: ansible_hostname == 'nfs-client'
+
+    - name: Unmount exports disks
+      block:
+      - name: Include OS-specific variables
+        ansible.builtin.include_vars: "../../vars/{{ ansible_os_family }}.yml"
+
+      - name: Make sure a NFS is stoped
+        ansible.builtin.systemd:
+          state: stopped
+          name: "{{ nfs_service_name }}"
+          enabled: true
+
+      - name: Unmount /disk.raw
+        ansible.posix.mount:
+          path: /exports
+          src: /disk.raw
+          state: unmounted
+      when: ansible_hostname == 'nfs-server'

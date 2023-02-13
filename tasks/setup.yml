@@ -3,15 +3,6 @@
   ansible.builtin.file:
     path: "{{ item | trim | split(' ') | first }}"
     state: directory
-    mode: '0766'
+    owner: nobody
+    mode: '0777'
     recurse: true
-  with_items: "{{ nfs_exports }}"
-
-- name: Update /etc/exports
-  ansible.builtin.template:
-    src: exports.j2
-    dest: /etc/exports
-    owner: root
-    group: root
-    mode: '0644'
-  notify: restart_nfs
