@@ -2,7 +2,7 @@ galaxy_info:
   role_name: nfs
   namespace: artem_shestakov
   author: Artem Shestakov
-  description: your role description
+  description: Role to install and setup NFS server/client
 
 
 
