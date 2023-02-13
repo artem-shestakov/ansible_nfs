@@ -3,14 +3,14 @@ import pytest
 import testinfra
 import testinfra.utils.ansible_runner
 
-
+EL = ['centos', 'redhat', 'rocky']
 testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
     os.environ['MOLECULE_INVENTORY_FILE']).get_hosts('nfs-server')
 
 # Get role variables from vars
 @pytest.fixture()
 def role_vars(host):
-    if host.system_info.distribution in ['centos', 'redhat']:
+    if host.system_info.distribution in EL:
         ansible_vars = host.ansible('include_vars', './vars/RedHat.yml')
     else:
         ansible_vars = host.ansible('include_vars', './vars/Debian.yml')
@@ -31,12 +31,13 @@ def client_vars(host):
 # Check that NFS server is running
 def test_service(host, role_vars):
     svc = host.service(role_vars['nfs_service_name'])
+    print(svc)
     assert svc.is_running
     assert svc.is_enabled
 
 # Check exported directories
 def test_exports(host, server_vars):
-    if host.system_info.distribution in ['centos', 'redhat']:
+    if host.system_info.distribution in EL:
         exports = server_vars['nfs_exports_redhat']
     else:
         exports = server_vars['nfs_exports_debian']
@@ -60,7 +61,7 @@ def test_server_client_sync(host, server_vars, client_vars):
         host.run(f"echo 'test_exports' > {export.split(' ')[0]}/test_file.txt")
 
     # Check file and content on client server
-    if host.system_info.distribution in ['centos', 'redhat']:
+    if host.system_info.distribution in EL:
         exports = client_vars['nfs_mount_points_redhat']
     else:
         exports = client_vars['nfs_mount_points_debian']

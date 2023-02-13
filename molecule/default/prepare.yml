@@ -1,38 +1,45 @@
 ---
 - name: Prepare
-  hosts: nfs-server
+  hosts: all
   tasks:
-    - name: Install e4fsprogs (Red Hat)
+    - name: Install packages (Red Hat)
       ansible.builtin.dnf:
-        name: e4fsprogs
+        name: 
+          - e4fsprogs
+          - iproute
         state: present
       when: ansible_os_family == 'RedHat'
 
-    - name: Install e2fsprogs (Debian)
+    - name: Install packages (Debian)
       ansible.builtin.apt:
-        name: e2fsprogs
+        name: 
+          - e2fsprogs
+          - iproute2
         update_cache: true
         state: present
       when: ansible_os_family == 'Debian'
     
-    - name: Create a file and allocate some space to it
-      ansible.builtin.command:
-        cmd: fallocate -l 100MB /disk.raw
-    
-    - name: Build a filesystem onto the disk.raw file
-      community.general.filesystem:
-        fstype: ext4
-        dev: /disk.raw
-    
-    - name: Create a directory to mount loop device
-      ansible.builtin.file:
-        path: "/exports"
-        state: directory
-        mode: '0644'
-    
-    - name: Mount /disk.raw
-      ansible.posix.mount:
-        path: /exports
-        src: /disk.raw
-        fstype: ext4
-        state: mounted
+    - name: Create and mount disk
+      block:
+      - name: Create a file and allocate some space to it
+        ansible.builtin.command:
+          cmd: fallocate -l 100MB /disk.raw
+      
+      - name: Build a filesystem onto the disk.raw file
+        community.general.filesystem:
+          fstype: ext4
+          dev: /disk.raw
+      
+      - name: Create a directory to mount loop device
+        ansible.builtin.file:
+          path: "/exports"
+          state: directory
+          mode: '0644'
+      
+      - name: Mount /disk.raw
+        ansible.posix.mount:
+          path: /exports
+          src: /disk.raw
+          fstype: ext4
+          state: mounted
+      when: ansible_hostname == 'nfs-server'
