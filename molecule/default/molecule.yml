@@ -22,10 +22,22 @@ provisioner:
   name: ansible
 verifier:
   name: testinfra
-  # options:
-  #   connection: docker
-  #   v: 2
-    # s:
+scenario:
+  test_sequence:
+    - lint
+    - destroy
+    - dependency
+    - syntax
+    - create
+    - prepare
+    - converge
+    - idempotence
+    - side_effect
+    - verify
+    - cleanup
+    - destroy
+  destroy_sequence:
+    - destroy
 lint: |
   set -e
   yamllint .

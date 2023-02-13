@@ -12,6 +12,16 @@
   block:
     - name: Setup NFS
       ansible.builtin.include_tasks: setup.yml
+      with_items: "{{ nfs_exports }}"
+    
+    - name: Update /etc/exports
+      ansible.builtin.template:
+        src: exports.j2
+        dest: /etc/exports
+        owner: root
+        group: root
+        mode: '0644'
+      notify: restart_nfs
 
     - name: Make sure a NFS is running
       ansible.builtin.systemd:
@@ -23,3 +33,4 @@
 - name: Setup clients
   ansible.builtin.include_tasks: client.yml
   when: nfs_client
+  with_items: "{{ nfs_mount_points }}"

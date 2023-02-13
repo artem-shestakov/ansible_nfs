@@ -46,7 +46,7 @@ def test_exports(host, server_vars):
         assert host.file(export.split(' ')[0]).mode == 0o777
 
 # Check sync between server and client
-def test_client(host, server_vars, client_vars):
+def test_server_client_sync(host, server_vars, client_vars):
     # Get client host
     host_client=testinfra.get_host(
         f"ansible://nfs-client?ansible_inventory={os.environ['MOLECULE_INVENTORY_FILE']}")
@@ -57,7 +57,7 @@ def test_client(host, server_vars, client_vars):
     else:
         exports = server_vars['nfs_exports_debian']
     for export in exports:
-        host.run(f"echo 'test_exports' > {export.split(' ')[-1]}/test_file.txt")
+        host.run(f"echo 'test_exports' > {export.split(' ')[0]}/test_file.txt")
 
     # Check file and content on client server
     if host.system_info.distribution in ['centos', 'redhat']:
